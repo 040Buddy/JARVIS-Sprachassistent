@@ -11,11 +11,16 @@ import logging
 import platform
 from pathlib import Path
 
-# UNICODE FIX WINDOWS
+# UNICODE FIX WINDOWS (besser)
 if platform.system() == "Windows":
-    import io
-    sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
-    sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8')
+    try:
+        import io
+        if sys.stdout and hasattr(sys.stdout, 'buffer'):
+            sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+        if sys.stderr and hasattr(sys.stderr, 'buffer'):
+            sys.stderr = io.TextIOWrapper(sys.stderr.buffer, encoding='utf-8')
+    except:
+        pass  # Fallback wenn nicht möglich
 
 # LOGGING
 logging.basicConfig(
@@ -217,116 +222,4 @@ class JarvisApp(QMainWindow):
         painter.end()
         return QIcon(pixmap)
     
-    def send_command(self):
-        """Text-Befehl senden"""
-        text = self.input_box.toPlainText().strip()
-        if text:
-            self.process_command(text)
-            self.input_box.clear()
-    
-    def listen_speech(self):
-        """Sprechen hoeren"""
-        self.status_label.setText("HOERE ZU...")
-        self.status_label.setStyleSheet("color: #FF0000;")
-        self.voice.listen()  # Blockiert
-        self.status_label.setText("BEREIT")
-        self.status_label.setStyleSheet("color: #00FF00;")
-    
-    def on_speech_recognized(self, text: str):
-        """Sprache erkannt"""
-        self.process_command(text)
-    
-    def on_listening_changed(self, listening: bool):
-        """Hoer-Status geaendert"""
-        if listening:
-            self.status_label.setText("HOERE ZU...")
-            self.status_label.setStyleSheet("color: #FF0000;")
-        else:
-            self.status_label.setText("BEREIT")
-            self.status_label.setStyleSheet("color: #00FF00;")
-    
-    def on_speech_error(self, error: str):
-        """Fehler"""
-        self.display_message("FEHLER", error)
-    
-    def process_command(self, text: str):
-        """Verarbeite Befehl"""
-        self.display_message("Du", text)
-        response, should_speak = self.processor.process(text)
-        
-        if response:
-            self.display_message("JARVIS", response)
-            self.db.add_chat(text, response)
-            
-            if should_speak:
-                self.voice.speak(response, async_mode=True)
-    
-    def display_message(self, sender: str, message: str):
-        """Zeige Nachricht"""
-        self.chat.append(f"{sender}: {message}")
-    
-    def key_press_handler(self, event):
-        """Keyboard"""
-        if event.key() == Qt.Key_Return and event.modifiers() == Qt.ControlModifier:
-            self.send_command()
-        else:
-            QTextEdit.keyPressEvent(self.input_box, event)
-    
-    def clear_chat(self):
-        """Loesche Chat"""
-        self.chat.clear()
-        self.display_message("JARVIS", "Chat geloescht.")
-    
-    def show_window(self):
-        """Zeige Fenster"""
-        self.show()
-        self.raise_()
-        self.activateWindow()
-    
-    def closeEvent(self, event):
-        """Minimiere zu Tray"""
-        if self.tray.isVisible():
-            self.hide()
-            event.ignore()
-        else:
-            event.accept()
-    
-    def close_app(self):
-        """Beende"""
-        logger.info("[APP] Beende JARVIS")
-        self.speech_thread.stop()
-        QApplication.quit()
-    
-    def _get_stylesheet(self):
-        """Stylesheet"""
-        return """
-        QMainWindow { background-color: #0a0e27; }
-        QLabel { color: #00D9FF; }
-        QTextEdit { background-color: #0a0e27; color: #00D9FF; border: 2px solid #00D9FF; border-radius: 5px; }
-        QPushButton { background-color: #00D9FF; color: #0a0e27; border: none; border-radius: 5px; padding: 10px; font-weight: bold; }
-        QPushButton:hover { background-color: #00FF00; }
-        QPushButton:pressed { background-color: #00AA00; }
-        """
-
-
-def main():
-    print("\n" + "="*60)
-    print("J.A.R.V.I.S v6.0 - KOMPLETTE APP")
-    print("="*60)
-    logger.info("[STARTUP] JARVIS v6.0")
-    
-    app = QApplication(sys.argv)
-    app.setApplicationName("JARVIS")
-    
-    window = JarvisApp()
-    window.show()
-    
-    print("="*60)
-    print("JARVIS ONLINE")
-    print("="*60 + "\n")
-    
-    sys.exit(app.exec_())
-
-
-if __name__ == "__main__":
-    main()
+    def send_command(self):\n        \"\"\"Text-Befehl senden\"\"\"\n        text = self.input_box.toPlainText().strip()\n        if text:\n            self.process_command(text)\n            self.input_box.clear()\n    \n    def listen_speech(self):\n        \"\"\"Sprechen hoeren\"\"\"\n        self.status_label.setText(\"HOERE ZU...\")\n        self.status_label.setStyleSheet(\"color: #FF0000;\")\n        self.voice.listen()  # Blockiert\n        self.status_label.setText(\"BEREIT\")\n        self.status_label.setStyleSheet(\"color: #00FF00;\")\n    \n    def on_speech_recognized(self, text: str):\n        \"\"\"Sprache erkannt\"\"\"\n        self.process_command(text)\n    \n    def on_listening_changed(self, listening: bool):\n        \"\"\"Hoer-Status geaendert\"\"\"\n        if listening:\n            self.status_label.setText(\"HOERE ZU...\")\n            self.status_label.setStyleSheet(\"color: #FF0000;\")\n        else:\n            self.status_label.setText(\"BEREIT\")\n            self.status_label.setStyleSheet(\"color: #00FF00;\")\n    \n    def on_speech_error(self, error: str):\n        \"\"\"Fehler\"\"\"\n        self.display_message(\"FEHLER\", error)\n    \n    def process_command(self, text: str):\n        \"\"\"Verarbeite Befehl\"\"\"\n        self.display_message(\"Du\", text)\n        response, should_speak = self.processor.process(text)\n        \n        if response:\n            self.display_message(\"JARVIS\", response)\n            self.db.add_chat(text, response)\n            \n            if should_speak:\n                self.voice.speak(response, async_mode=True)\n    \n    def display_message(self, sender: str, message: str):\n        \"\"\"Zeige Nachricht\"\"\"\n        self.chat.append(f\"{sender}: {message}\")\n    \n    def key_press_handler(self, event):\n        \"\"\"Keyboard\"\"\"\n        if event.key() == Qt.Key_Return and event.modifiers() == Qt.ControlModifier:\n            self.send_command()\n        else:\n            QTextEdit.keyPressEvent(self.input_box, event)\n    \n    def clear_chat(self):\n        \"\"\"Loesche Chat\"\"\"\n        self.chat.clear()\n        self.display_message(\"JARVIS\", \"Chat geloescht.\")\n    \n    def show_window(self):\n        \"\"\"Zeige Fenster\"\"\"\n        self.show()\n        self.raise_()\n        self.activateWindow()\n    \n    def closeEvent(self, event):\n        \"\"\"Minimiere zu Tray\"\"\"\n        if self.tray.isVisible():\n            self.hide()\n            event.ignore()\n        else:\n            event.accept()\n    \n    def close_app(self):\n        \"\"\"Beende\"\"\"\n        logger.info(\"[APP] Beende JARVIS\")\n        self.speech_thread.stop()\n        QApplication.quit()\n    \n    def _get_stylesheet(self):\n        \"\"\"Stylesheet\"\"\"\n        return \"\"\"\n        QMainWindow { background-color: #0a0e27; }\n        QLabel { color: #00D9FF; }\n        QTextEdit { background-color: #0a0e27; color: #00D9FF; border: 2px solid #00D9FF; border-radius: 5px; }\n        QPushButton { background-color: #00D9FF; color: #0a0e27; border: none; border-radius: 5px; padding: 10px; font-weight: bold; }\n        QPushButton:hover { background-color: #00FF00; }\n        QPushButton:pressed { background-color: #00AA00; }\n        \"\"\"\n\n\ndef main():\n    print(\"\\n\" + \"=\"*60)\n    print(\"J.A.R.V.I.S v6.0 - KOMPLETTE APP\")\n    print(\"=\"*60)\n    logger.info(\"[STARTUP] JARVIS v6.0\")\n    \n    app = QApplication(sys.argv)\n    app.setApplicationName(\"JARVIS\")\n    \n    window = JarvisApp()\n    window.show()\n    \n    print(\"=\"*60)\n    print(\"JARVIS ONLINE\")\n    print(\"=\"*60 + \"\\n\")\n    \n    sys.exit(app.exec_())\n\n\nif __name__ == \"__main__\":\n    main()\n
