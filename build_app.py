@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
+
 """
 Baut JARVIS in eine eigenstaendige Windows EXE
 Verwendung: python build_app.py
@@ -32,27 +33,44 @@ for folder in ['build', 'dist', '__pycache__']:
         shutil.rmtree(folder)
         print(f"    Geloescht: {folder}")
 
-# BUILD COMMAND
+# BUILD COMMAND - FIX: Use python -m pyinstaller
 print("\n[3] Baue EXE...")
+
 build_cmd = [
-    'pyinstaller',
+    sys.executable,  # Nutze den gleichen Python Interpreter
+    '-m',
+    'PyInstaller',
     '--onefile',
     '--windowed',
     '--name=JARVIS',
-    '--icon=jarvis_icon.ico',
     '--add-data=modules:modules',
     'main.py'
 ]
 
 try:
-    subprocess.run(build_cmd, check=True)
+    result = subprocess.run(build_cmd, check=True, capture_output=True, text=True)
     print("    Erfolg! EXE erstellt")
+    if result.stdout:
+        print(result.stdout)
 except subprocess.CalledProcessError as e:
     print(f"    FEHLER: {e}")
+    if e.stderr:
+        print(f"    Details: {e.stderr}")
+    sys.exit(1)
+except FileNotFoundError as e:
+    print(f"    FEHLER: {e}")
+    print("    PyInstaller nicht im PATH gefunden")
     sys.exit(1)
 
 # RESULT
 print("\n[4] Fertig!")
-print("\n  EXE-Datei: dist/JARVIS.exe")
-print("  Starten: doppelklick auf JARVIS.exe")
+exe_path = Path("dist") / "JARVIS.exe"
+if exe_path.exists():
+    print(f"\n  ✅ EXE-Datei erstellt: {exe_path}")
+    print(f"  📦 Größe: {exe_path.stat().st_size / (1024*1024):.1f} MB")
+    print(f"\n  ▶️  Starten: doppelklick auf dist/JARVIS.exe")
+else:
+    print(f"\n  ⚠️  EXE nicht gefunden: {exe_path}")
+    print("     Pruefe den Output oben auf Fehler")
+
 print("\n" + "="*60 + "\n")
