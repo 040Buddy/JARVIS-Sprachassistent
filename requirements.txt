@@ -1,5 +1,10 @@
-# J.A.R.V.I.S - Sprachassistent
+# J.A.R.V.I.S - Sprachassistent v5.0
 # Python 3.8+ erforderlich
+# Für Python 3.14: setuptools wird automatisch installiert!
+
+# Build System (wichtig für Python 3.14)
+setuptools>=65.0.0
+wheel>=0.40.0
 
 # Spracherkennung & Text-to-Speech
 SpeechRecognition==3.10.0
