@@ -1,194 +1,214 @@
-# J.A.R.V.I.S - Sprachassistent v5.0
+# J.A.R.V.I.S v6.0 - Komplette Professional App
 
-**Just A Rather Very Intelligent System** - Ein moderner Sprachassistent mit PyQt5 GUI, realistischer männlicher Stimme und KI-Integration.
+**Just A Rather Very Intelligent System** - Dein persoenlicher KI-Sprachassistent fuer Windows
 
-## 🚀 Features
+## 🎯 Features
 
-- **Spracherkennung** - Deutsche Spracherkennung mit Google Speech-to-Text
-- **Männliche Stimme** - Realistische männliche Sprachausgabe (JARVIS-Stil)
-- **PyQt5 GUI** - Iron Man inspiertes Interface mit Echtzeit-Feedback
-- **Befehlssystem** - Umfassendes Befehlssystem für Apps, Suche, Zeit, System-Info
-- **Gedächtnis-System** - Lernt neue Befehle und speichert Präferenzen
-- **Error-Handling** - Robuste Fehlerbehandlung und Logging
-- **System-Monitoring** - CPU, RAM und Festplatte Überwachung
-- **Multi-Threading** - Asynchrone Spracherkennung
+### 🎤 Spracherkennung
+- Deutsche Spracherkennung mit Google API
+- Realistische maennliche Stimme (Text-to-Speech)
+- Asynchrone Verarbeitung (keine Verzoegerung)
 
-## 📋 Anforderungen
+### 📝 Notizen
+- Schreibe schnell Notizen
+- Automatisch auf Desktop gespeichert
+- "Schreibe eine Notiz: Einkaufen Milch, Brot, Kaese"
 
-- Python 3.8+
-- Windows/macOS/Linux
-- Mikrofon für Spracherkennung
+### ⏱️ Timer & Alarme
+- Timer stellen: "Timer fuer 5 Minuten"
+- Automatische Benachrichtigung
+- Mehrere Timer gleichzeitig
 
-## 🔧 Installation
+### 🚀 Apps oeffnen
+- Chrome, Firefox, Edge, Discord, Spotify
+- Uhr, Rechner, Notepad, Explorer
+- "Oeffne Chrome" → Chrome startet sofort
 
-### 1. Repository klonen
+### 🔍 Browser-Befehle
+- Google-Suche: "Suche nach Python"
+- Direkt im Standard-Browser
+
+### ✅ Todo/Aufgaben
+- Aufgaben-Verwaltung: "Erstelle Aufgabe Projekt fertig"
+- Offline gespeichert
+- In Datenbank
+
+### 💾 Chat-Historie
+- Alle Gespraeche gespeichert
+- Zeitstempel
+- Durchsuchbar
+
+### ⚙️ Erweiterte Einstellungen
+- Benutzername aendern
+- Sprachwechsel (bald)
+- Auto-Start Option (bald)
+
+## 📥 Installation
+
+### Option 1: Fertige EXE (Schnell)
 ```bash
+1. Lade JARVIS.exe herunter
+2. Doppelklick -> Starten
+3. Keine Installation noetig!
+```
+
+### Option 2: Aus Source (Entwickler)
+```bash
+# 1. Klone Repository
 git clone https://github.com/040Buddy/JARVIS-Sprachassistent.git
 cd JARVIS-Sprachassistent
-```
 
-### 2. Abhängigkeiten installieren
-```bash
+# 2. Installiere Dependencies
 pip install -r requirements.txt
-```
 
-### 3. JARVIS starten
-```bash
+# 3. Starte
 python main.py
 ```
 
-## 💬 Befehle
+### Option 3: Baue eigene EXE
+```bash
+# Installiere PyInstaller
+pip install pyinstaller
 
-### Grüße
+# Baue EXE
+python build_app.py
+
+# Starten
+dist/JARVIS.exe
 ```
-"Hallo JARVIS"
+
+## 🎮 Befehle
+
+### Grueße
+```
+"Hallo" → JARVIS antwortet nach Tageszeit
 "Guten Morgen"
+"Guten Tag"
 ```
 
-### Anwendungen öffnen
+### Notizen
 ```
-"Öffne Chrome"
+"Schreibe eine Notiz: Meine Einkaufsliste"
+→ Speichert als: Desktop/JARVIS_Notes/Notiz_*.txt
+
+"Schreibe Notiz: Projektideen: Spiele, Apps, Websites"
+```
+
+### Aufgaben
+```
+"Erstelle Aufgabe: Projekt bis Freitag fertig"
+"Erstelle Aufgabe: Meeting mit Team"
+"Meine Aufgaben" → Zeigt alle ToDos
+```
+
+### Timer
+```
+"Timer fuer 5 Minuten"
+"Timer 30 Sekunden"
+"Wecker fuer 1 Stunde"
+→ Benachrichtigung wenn fertig
+```
+
+### Apps oeffnen
+```
+"Oeffne Chrome" → Google Chrome startet
 "Starte Discord"
-"Öffne Visual Studio Code"
+"Oeffne VS Code"
+"Oeffne Uhr"
+"Oeffne Rechner"
+"Starte Firefox"
 ```
 
-### Web-Suche
+### Suche
 ```
-"Suche nach Python"
-"Google: Wie mache ich Pizza"
+"Suche nach Python Tutorial"
+"Google: Machine Learning"
+→ Oeffnet Google mit Suchergebnis
 ```
 
 ### Zeit & Datum
 ```
-"Wie spät ist es?"
-"Sag mir das Datum"
+"Wie spaet ist es?" → "Es ist 15:30 Uhr, Freitag..."
+"Datum" → Heutiges Datum
 ```
 
-### System-Information
+## 📊 Datenbank
+
+Alle Daten werden lokal gespeichert:
+- `jarvis.db` - SQLite Datenbank
+  - Notizen
+  - Aufgaben/Todos
+  - Chat-Historie
+  - Timer-History
+
+## 🔧 Konfiguration
+
+Editiere `config.py`:
+
+```python
+# Sprachgeschwindigkeit (80-400)
+TTS_RATE = 150
+
+# Lautstärke (0.0-1.0)
+TTS_VOLUME = 1.0
+
+# Sprache
+SR_LANGUAGE = "de-DE"  # Deutsch
+
+# Notizen-Verzeichnis
+NOTES_DIR = Path.home() / "Desktop" / "JARVIS_Notes"
 ```
-"Wie ist die CPU Auslastung?"
-"Speicher Status"
-```
 
-### Neue Befehle lernen
-```
-"Merke dir: hallo : Hallo Meister!"
-"Erinnere mich: test : Das ist ein Test"
-```
+## 📋 Systemanforderungen
 
-## 📁 Projektstruktur
-
-```
-JARVIS-Sprachassistent/
-├── main.py              # Hauptanwendung
-├── requirements.txt     # Abhängigkeiten
-├── README.md           # Dokumentation
-├── jarvis_memory.json  # Gedächtnis-Datei (wird erstellt)
-└── jarvis.log          # Log-Datei (wird erstellt)
-```
-
-## 🎯 Komponenten
-
-### MaleVoiceEngine
-- Text-to-Speech mit männlicher Stimme
-- Automatische Stimme-Erkennung
-- Asynchrone Sprachausgabe
-
-### SpeechRecognitionThread
-- Läuft in separatem Thread
-- Google Speech Recognition (deutsch)
-- Robustes Error-Handling
-- Live-Status Updates
-
-### CommandProcessor
-- Intelligente Befehl-Klassifikation
-- Befehl-Historie
-- Gedächtnis-System
-- Modulares Design
-
-### JarvisUI
-- PyQt5 basiert
-- Dark Mode mit Cyan/Green Styling
-- Echtzeit Chat-Display
-- Taskbar Integration
-
-## 🔐 Sicherheit
-
-- Logging aller Befehle und Fehler
-- Lokal gespeicherte Gedächtnis-Datei (JSON)
-- Keine Cloud-Abhängigkeit außer Google Speech API
-- Thread-safe Operations
+- **OS**: Windows 7+
+- **RAM**: 2GB minimum (4GB empfohlen)
+- **Internet**: Fuer Spracherkennung & Suche
+- **Mikrofon**: Fuer Spracherkennung
+- **Lautsprecher**: Fuer Sprachausgabe
 
 ## 🐛 Troubleshooting
 
 ### Spracherkennung funktioniert nicht
-- Überprüfe Mikrofon-Einstellungen
-- Stelle sicher, dass sounddevice installiert ist
-- Prüfe Internet-Verbindung (Google API benötigt online)
+1. Pruefe Mikrofon in Windows
+2. Stelle sicher, dass Internet verbunden ist
+3. Restart JARVIS
 
 ### Stimme wird nicht abgespielt
-- Überprüfe Lautsprecher-Einstellungen
-- Stelle sicher, dass pyttsx3 korrekt installiert ist
+1. Pruefe Lautsprecher
+2. Erhoehe Lautstärke in Windows
 
-### PyQt5 Fehler
-```bash
-pip install --upgrade PyQt5
-```
+### Apps oeffnen nicht
+1. App muss im PATH sein oder auf Desktop
+2. Nutze kompletten Pfad in config.py
 
-## 📝 Logs
+## 📈 Geplante Features
 
-Alle Aktionen werden in `jarvis.log` geloggt:
-```bash
-tail -f jarvis.log
-```
-
-## 🎨 Customization
-
-### Stimme anpassen
-Editiere in `main.py` (MaleVoiceEngine):
-```python
-self.engine.setProperty('rate', 130)  # Sprechgeschwindigkeit
-self.engine.setProperty('volume', 0.95)  # Lautstärke
-self.engine.setProperty('pitch', 0.85)  # Tonhöhe
-```
-
-### Benutzer-Name
-Editiere `jarvis_memory.json`:
-```json
-{
-  "user_name": "Dein Name",
-  ...
-}
-```
-
-## 🤝 Beiträge
-
-Pull Requests sind willkommen! Für größere Änderungen bitte zuerst ein Issue öffnen.
+- [ ] Offline Speech Recognition
+- [ ] OpenAI GPT Integration
+- [ ] Smarthome Control (Philips Hue, etc.)
+- [ ] Kalender-Integration (Google Cal)
+- [ ] Emai-Zugriff
+- [ ] Wetter-Daten (live)
+- [ ] Mobile App (Android/iOS)
+- [ ] Cloud-Sync
+- [ ] Plugin-System
+- [ ] Web-Interface
 
 ## 📄 Lizenz
 
-MIT License - siehe LICENSE Datei
+MIT License - Frei verwendbar
 
-## 🙏 Credits
+## 👨‍💻 Autor
 
-- Google Speech Recognition API
-- pyttsx3 Text-to-Speech
-- PyQt5 GUI Framework
-- sounddevice Audio Library
+Erstellt von 040Buddy
 
-## ⭐ Features für die Zukunft
+## 🤝 Support
 
-- [ ] OpenAI GPT Integration für intelligentere Antworten
-- [ ] Offline-Spracherkennung
-- [ ] Mehrsprachige Unterstützung
-- [ ] Custom Voice-Profile
-- [ ] Website-Scraping für Live-Daten
-- [ ] Todo/Reminder System
-- [ ] Musik-Integration
-- [ ] Smart Home Integration
+Probleme? Issues posten auf GitHub oder frag JARVIS direkt!
 
 ---
 
-**Autor:** 040Buddy  
-**Version:** 5.0  
-**Letzte Aktualisierung:** 2024
+**Version**: 6.0  
+**Status**: Release  
+**Letzte Aenderung**: 2024

@@ -1,29 +1,21 @@
-# J.A.R.V.I.S - Sprachassistent v5.0
-# Python 3.8+ erforderlich
-# Für Python 3.14: Neueste kompatible Versionen!
+# J.A.R.V.I.S v6.0 Requirements
 
-# Build System
-setuptools>=70.0.0
-wheel>=0.42.0
-
-# Spracherkennung & Text-to-Speech
+# Spracherkennung & TTS
 SpeechRecognition==3.10.0
 pyttsx3==2.90
 
-# Audio-Verarbeitung (numpy 2.x für Python 3.14)
+# Audio
 sounddevice==0.4.6
-soundfile==0.12.1
 numpy>=2.0.0
 
 # GUI
 PyQt5==5.15.9
 
-# System-Monitoring
+# System
 psutil>=5.9.6
+
+# Builder
+pyinstaller>=6.0.0
 
 # Utility
 requests>=2.31.0
-beautifulsoup4>=4.12.2
-python-dotenv>=1.0.0
-wikipedia>=1.4.0
-openai>=1.3.0
